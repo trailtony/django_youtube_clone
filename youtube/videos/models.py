@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Video(models.Model):
-    useer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="videos")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="videos")
     title = models.CharField(max_length=120)
     description = models.TextField(blank=True)
     
