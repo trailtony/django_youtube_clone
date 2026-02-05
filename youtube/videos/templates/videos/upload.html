@@ -78,6 +78,57 @@
 
 {% block extra_js %}
 <script>
+const $ = id => document.getElementById(id);
+
+$("id_video_file").onchange = e => {
+    const file = e.target.files[0]
+    $("video-label").textContent = file ? `${file.name}` : "Click to select a video file"
+}
+
+$("customThumbnail").onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader()
+    reader.onload = ev => {
+        $("thumbPreview").src = ev.target.result
+        $("thumbPreview").classList.add("visible")
+        $("thumb-label").style.display = "none"
+        $("thumbnailData").value = ev.target.result;
+    }
+    reader.readAsDataURL(file)
+}
+
+$("uploadForm").onsubmit = async e => {
+    e.preventDefault()
+
+    if (!$("id_video_file").files.length || !$("id_title").value.trim()) return;
+
+    $("uploadOverlay").classList.add("active")
+    $("submitBtn").disabled = true;
+    $('errorContainer').innerHtml = ""
+    window.onbeforeunload = () => "Upload in progress"
+
+    try {
+        const res = await fetch("{% url 'videos:upload_submit' %}", {
+            method: "POST",
+            body: new FormData(e.target)
+        })
+        const data = await res.json()
+        window.onbeforeunload = null;
+
+        if (data.success) {
+            $('uploadStatus').textContent = "Upload complete!"
+            setTimeout(() => location.href = '{% url "videos:list" %}', 500)
+        } else {
+            throw new Error(data.error)
+        }
+    } catch (err) {
+        window.onbeforeunload = null;
+        $("uploadOverlay").classList.remove("active")
+        $("submitBtn").disabled = false;
+        $('errorContainer').innerHTML = `<ul class="error-list"><li>${err.message || "Upload failed"}</li></ul>`
+    }
+}
 
 </script>
 {% endblock %}
