@@ -176,40 +176,36 @@ LOGGING = {
         },
         'file': {
             'level': LOG_LEVEL,
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'django.log',
-            'when': 'midnight',
-            'interval': 1,
-            'backupCount': 30,  # Keep 30 days
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 30,
             'formatter': 'verbose',
             'encoding': 'utf-8',
         },
         'error_file': {
             'level': 'ERROR',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'errors.log',
-            'when': 'midnight',
-            'interval': 1,
-            'backupCount': 90,  # Keep 90 days for errors
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 90,
             'formatter': 'verbose',
             'encoding': 'utf-8',
         },
         'security_file': {
             'level': 'WARNING',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'security.log',
-            'when': 'midnight',
-            'interval': 1,
-            'backupCount': 365,  # Keep 1 year for security audit
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 365,  # Keep 365 backups
             'formatter': 'verbose',
             'encoding': 'utf-8',
         },
         'video_file': {
             'level': 'INFO',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR / 'logs' / 'video_uploads.log',
-            'when': 'midnight',
-            'interval': 1,
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
             'backupCount': 30,
             'formatter': 'verbose',
             'encoding': 'utf-8',

@@ -80,7 +80,7 @@ def video_upload(request):
             log_exception(logger, 'Video upload failed', e,
                         user_id=request.user.id,
                         filename=video_file.name)
-            return JsonResponse({"success": False, "error": "An error occurred during upload. Please try again."})
+            return JsonResponse({"success": False, "error": "An error occurred during upload. Please try again."}, status=500)
     
     errors = []
     for field, field_errors in form.errors.items():
@@ -90,7 +90,7 @@ def video_upload(request):
     log_with_context(logger, 'warning', 'Form validation failed',
                     user_id=request.user.id,
                     errors='; '.join(errors))
-    return JsonResponse({"success": False, "errors": ";".join(errors)})
+    return JsonResponse({"success": False, "errors": ";".join(errors)}, status=400)
 
 
 @login_required

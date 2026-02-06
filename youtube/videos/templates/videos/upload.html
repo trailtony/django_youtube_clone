@@ -4,14 +4,14 @@
 {% block title %}Upload Video - Youtube Clone{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/video.css' %}">
+<link rel="stylesheet" href="{% static 'css/videos.css' %}">
 <link rel="stylesheet" href="{% static 'css/upload.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="upload-overlay" id="uploadOverlay">
     <div class="upload-progress-container">
-        <div class="upload=spinner"></div>
+        <div class="upload-spinner"></div>
         <h2 id="uploadStatus">Uploading Video...</h2>
         <p class="upload-warning">Please don't close this page</p>
     </div>
@@ -32,7 +32,7 @@
                                 <li>{{error}}</li>
                             {% endfor %}
                         {% endfor %}
-                        {% for error in form.non_field_errros %}
+                        {% for error in form.non_field_errors %}
                             <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label for="id_description">Description</label>
-                <textarea name="description" id="id_description" class="form-input" placeholder="Enter video description" rows="3">{{ form.description.value|default:'' }}</textarea >
+                <textarea name="description" id="id_description" class="form-input" placeholder="Enter video description" rows="3">{{ form.description.value|default:'' }}</textarea>
             </div>
 
             <div class="form-group">
@@ -105,7 +105,7 @@ $("uploadForm").onsubmit = async e => {
 
     $("uploadOverlay").classList.add("active")
     $("submitBtn").disabled = true;
-    $('errorContainer').innerHtml = ""
+    $("errorContainer").innerHTML = ""
     window.onbeforeunload = () => "Upload in progress"
 
     try {
@@ -117,8 +117,8 @@ $("uploadForm").onsubmit = async e => {
         window.onbeforeunload = null;
 
         if (data.success) {
-            $('uploadStatus').textContent = "Upload complete!"
-            setTimeout(() => location.href = '{% url "videos:list" %}', 500)
+            $("uploadStatus").textContent = "Upload complete!"
+            setTimeout(() => location.href = '{% url "videos:upload" %}', 500) //change to list
         } else {
             throw new Error(data.error)
         }
@@ -126,7 +126,7 @@ $("uploadForm").onsubmit = async e => {
         window.onbeforeunload = null;
         $("uploadOverlay").classList.remove("active")
         $("submitBtn").disabled = false;
-        $('errorContainer').innerHTML = `<ul class="error-list"><li>${err.message || "Upload failed"}</li></ul>`
+        $("errorContainer").innerHTML = `<ul class="error-list"><li>${err.message || "Upload failed"}</li></ul>`
     }
 }
 
