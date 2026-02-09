@@ -13,6 +13,16 @@ logger = get_logger(__name__)
 
 # Create your views here.
 
+def video_list(request):
+    videos = Video.objects.all()
+    return render(request, 'videos/list.html', {"videos": videos})
+
+def video_detail(request, video_id):
+    video = get_object_or_404(Video.objects, id=video_id)
+    
+    return render(request, "videos/detail.html", {"video": video})
+    
+
 @login_required
 @require_POST
 def video_upload(request):
