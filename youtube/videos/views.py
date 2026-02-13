@@ -17,6 +17,12 @@ def video_list(request):
     videos = Video.objects.all()
     return render(request, 'videos/list.html', {"videos": videos})
 
+
+def channel_videos(request, username):
+    videos = Video.objects.filter(user__username=username)
+    return render((request, "videos/channel.html", {"videos": videos, "channel_name": username}))
+    
+
 def video_detail(request, video_id):
     video = get_object_or_404(Video.objects, id=video_id)
     
